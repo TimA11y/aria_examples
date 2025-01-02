@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>ARIA Button</title>
+</head>
+<body>
+	<p>To create an ARIA button that will display a modal dialog when clicked, we need to do the following things.</p>
+	<ul>
+		<li>Add role="button" to the element that will display as a button. This ensures assistive technology (AT) like screen readers will understand this is a button.</li>
+		<li>We need to add tabindex="0" to the element so that it will receive keyboard focus.</li>
+		<li>We need to add a keyup event listener to trigger the click event whenever the user presses Enter--so it will work like a real button.</li>
+	</ul>
+	<div>
+		<span role="button" tabindex="0">Display Message</span>
+	</div>
+	<p>To create a disabled ARIA button, we need to do a few things as well.</p>
+	<ul>
+		<li>Either remove the tabindex="0" from the element or change it to tabindex="-1" so the user can no longer tab to the button.</li>
+		<li>Add aria-disabled="true" so the button reports its disabled state to assistive technologies (AT) like screen readers.</li>
+	</ul>
+	<div>
+		<span role="button" aria-disabled="true">Display Same Message</span>
+	</div>
+	<p>If we had used an HTML button element, we would not need role="button", tabindex="0" or tabindex="-1", aria-disabled="true", or a keyup event listener. We would just use the button element and add the disabled attribute to the button when it is disabled.</p>
+	<div>
+		<button>Try This!</button>
+	</div>
+	<div>
+		<button disabled>Try this other one!</button>
+	</div>
+	<dialog>
+		<form>
+			<p>Hello World!</p>
+			<button type="submit" autofocus>OK</button>
+		</form>
+	</dialog>
+	<script>
+		// User Interface Variables
+const btn = document.querySelector(`[role="button"]`); // Grab reference to the first fake button.
+const button = document.querySelector("button"); // grab the reference for the first real button.
+const modal = document.querySelector("dialog");
+
+// Event Listeners
+
+// Display the modal dialog when the click event triggers on the button.
+btn.addEventListener("click", function (event) {
+	modal.showModal();
+});
+
+// When the button has focus and the user presses Enter or Space, trigger the click event.
+// Without this, pressing enter or space on the fake button will do nothing.
+btn.addEventListener("keyup", function (event) {
+	let key = event.code;
+	if (key === "Enter" || key === "Space") {
+		btn.click();
+	}
+});
+
+button.addEventListener("click", function (event) {
+	modal.showModal();
+});
+	</script>
+</body>
+</html>
